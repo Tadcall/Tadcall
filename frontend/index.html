@@ -73,14 +73,14 @@
             <div class="col-md-4">
               <h2>Your Virtual Numbers</h2>
               <ul  class="list-group" data-bind="foreach: user().virtualNumbers">
-                <li class="list-group-item" data-bind="text: $data, attr: { id: $data }"></li>
+                <li class="list-group-item" data-bind="text: $data, attr: { id: $data }, css:{ 'active': $root.vNoSelected() == $data}, click: function(){$root.selectNo('virtual',$data)}"></li>
               </ul>
               <p><a class="btn btn-default" href="#" role="button">+</a></p>
            </div>
             <div class="col-md-4">
               <h2>Your Real Numbers</h2>
               <ul class="list-group" data-bind="foreach: user().realNumbers">
-                <li class="list-group-item" data-bind="text: $data, attr: { id: $data }"></li>
+                <li class="list-group-item" data-bind="text: $data, attr: { id: $data }, css:{ 'active': $root.rNoSelected() == $data}, click: function(){$root.selectNo('real',$data)}"></li>
               </ul>
               <p><a class="btn btn-default" href="#" role="button">+</a></p>
             </div>
@@ -89,7 +89,7 @@
               <form>
                 <div class="form-group">
                   <label for="selectRestriction">Type</label>
-                  <select id="selectRestriction" data-bind="options: restrictions,  value: selectedRestriction, optionsCaption: 'Choose...'" class="form-control" ></select>
+                  <select id="selectRestriction" data-bind="options: restrictionTypes,  value: selectedRestriction, optionsCaption: 'Choose...'" class="form-control" ></select>
                 </div>
                 <div data-bind="visible: isRestrictionType('Time')" class="well">
                 <div class="form-group" >
@@ -98,16 +98,16 @@
                 </div>
                 <div class="form-group" >
                   <label for="start">End Time</label>
-                  <input type="time" id="start" name="start" class="form-control" value="17:00">
+                  <input type="time" id="end" name="start" class="form-control" value="17:00">
                 </div>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" value=""> Weekdays
+                    <input type="checkbox" id="weekdays" value="1"> Weekdays
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" value="" > Weekends
+                    <input type="checkbox" id="weekends" value="1" > Weekends
                   </label>
                 </div>
               </div>
@@ -120,20 +120,20 @@
               <div data-bind="visible: isRestrictionType('Number of Calls')" class="well">
                 <div class="form-group">
                   <label for="selectNoCalls">Number of Calls</label>
-                  <input type="number" class="form-control" id="selectNoCalls" placeholder="Infinite">
+                  <input type="number" class="form-control" id="noCalls" placeholder="Infinite">
                 </div>
                 <div class="form-group">
                   <label for="selectNoCalls">Every</label>
-                  <input type="number" class="form-control" id="selectNoCalls" placeholder="1">
+                  <input type="number" class="form-control" id="noUnits" placeholder="1">
                   <div class="btn-group btn-group-justified">
-                    <a type="button" class="btn btn-default">Days</a>
-                    <a type="button" class="btn btn-default">Hours</a>
-                    <a type="button" class="btn btn-default">Minutes</a>
+                    <a type="button" class="btn btn-default" data-bind="css: {'btn-primary': isSelectedUnit('days')}, click: function(){selectUnit('days')}">Days</a>
+                    <a type="button" class="btn btn-default" data-bind="css: {'btn-primary': isSelectedUnit('hours')}, click: function(){selectUnit('hours')}">Hours</a>
+                    <a type="button" class="btn btn-default" data-bind="css: {'btn-primary': isSelectedUnit('minutes')},  click: function(){selectUnit('minutes')}">Minutes</a>
                   </div>
                 </div>
               </div>
               </form>
-              <p><a class="btn btn-success" href="#" role="button">Create Restriction</a></p>
+              <p><a class="btn btn-success" data-bind="click: createRestriction"  role="button">Create Restriction</a></p>
             </div>
           </div>
 
@@ -155,9 +155,19 @@
         </div>
       </div>
 
-
-
-
+      <table class="table">
+        <thead>
+          <tr><th>From</th><th>To</th><th>Restriction Type</th><th>Restriction Options</th></tr>
+        </thead>
+        <tbody data-bind="foreach: restrictions">
+          <tr>
+            <td data-bind="text: vNumber"></td>
+            <td data-bind="text: rNumber"></td>
+            <td data-bind="text: restrictionType"></td>
+            <td data-bind="text: printRestriction()"></td>
+          </tr>
+        </tbody>
+      </table>
 
       <hr>
 
@@ -176,6 +186,7 @@
     <script src="js/timepicker.js"></script>
     <script src="js/user.js"></script>
     <script src="js/countries.js"></script>
+    <script src="js/restrictions.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/index.js"></script>
 
