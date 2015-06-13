@@ -12,11 +12,26 @@ def get_user(req):
     content = {'id' : user.id}
     return make_response(content)
 
-def get_link(req):
+def get_links(req):
     user_id = req.GET['id']
     links = Link.objects.filter(user = user_id)
-    content = map(links, lambda x: x.to_json())
+    content = map(lambda x: x.to_dict(), links)
     return make_response(content)
+
+def add_real_phone_number(req):
+    real_phone_number = req.GET['real_phone_number']
+    user_id = req.GET['user_id']
+    user = User.objects.filter(id = user_id).first()
+    rpn = RealPhoneNumber()
+    rpn.number = real_phone_number
+    rpn.user = user
+    rpn.save()
+    return HttpResponse()
+
+def add_link(req):
+    # make API call to get a virtual phone
+
+    return 0
 
 
 def make_response(content):

@@ -21,4 +21,6 @@ import backend.work
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^get_user/', backend.work.get_user),
+    url(r'^get_links/', backend.work.get_links),
+    url(r'^add_real_phone_number/', backend.work.add_real_phone_number),
 ]

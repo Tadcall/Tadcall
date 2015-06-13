@@ -8,11 +8,11 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
-    def to_json(self):
-        return json.dumps({
+    def to_dict(self):
+        return {
             'user': self.id,
             'name': self.name
-        })
+        }
 
 class RealPhoneNumber(models.Model):
     number = models.CharField(max_length=50)
@@ -21,12 +21,12 @@ class RealPhoneNumber(models.Model):
     def __str__(self):
         return "%s %s" % ( self.user, self.number)
 
-    def to_json(self):
-        return json.dumps({
+    def to_dict(self):
+        return {
             'type': 'real',
-            'number': number,
-            'user': user.to_json()
-        })
+            'number': self.number,
+            'user': self.user.to_dict()
+        }
 
 
 class VirtualPhoneNumber(models.Model):
@@ -36,12 +36,12 @@ class VirtualPhoneNumber(models.Model):
     def __str__(self):
         return "%s %s" % ( self.user, self.number)
 
-    def to_json(self):
-        return json.dumps({
+    def to_dict(self):
+        return {
             'type': 'virtual',
             'number': self.number,
-            'user': user.to_json()
-        })
+            'user': self.user.to_dict()
+        }
 
 class Link(models.Model):
     user = models.ForeignKey(User)
@@ -51,10 +51,10 @@ class Link(models.Model):
     def __str__(self):
         return "%s %s %s" % ( self.user, self.virtual_phone_number, self.real_phone_number)
 
-    def to_json(self):
-       return  json.dump({
-           user: user.to_json(),
-           real_phone_number: real_phone_number.to_json(),
-           virtual_phone_number: virtual_phone_number.to_json()
-       })
+    def to_dict(self):
+       return  {
+           'user': self.user.to_dict(),
+           'real_phone_number': self.real_phone_number.to_dict(),
+           'virtual_phone_number': self.virtual_phone_number.to_dict()
+       }
 
