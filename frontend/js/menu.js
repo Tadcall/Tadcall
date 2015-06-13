@@ -33,6 +33,14 @@ var MenuModel = function() {
       self.currentView("landing");
     };
 
+
+    self.createRealNumber = function(){
+      var number = $('#newNumber').val();
+      $.post("http://46.101.25.199:7999/add_real_phone_number/?user_id=" + self.user().id() +"&real_phone_number=" + number ,{},function(data){
+        self.user().realNumbers().push(number);
+      })
+    }
+
     self.selectNo = function(type,no){
       if(type=='real') self.rNoSelected(no);
       else self.vNoSelected(no);
@@ -69,7 +77,7 @@ var MenuModel = function() {
         options.start = $('#start').val();
         options.end = $('#end').val();
         options.weekdays = $('#weekdays').is(':checked');
-        options.weekends = $('#weekdays').is(':checked');
+        options.weekends = $('#weekends').is(':checked');
       }
       else if(self.selectedRestriction() == "Location"){
         options.country = self.selectedCountry();
@@ -79,7 +87,16 @@ var MenuModel = function() {
         options.unit = self.selectedUnit();
       }
       r.restrictionOptions(options);
-      self.restrictions.push(r);
+      var req = {type: r.restrictionType(),
+                 options: options,
+                 vNumber: self.vNoSelected(),
+                 rNumber: self.rNoSelected()};
+      console.log(req);
+      $.post("http://46.101.25.199:7999/add_link_with_restrictions/?user_id="
+              + self.user().id(), JSON.stringify(req),
+              function(data){
+                 self.restrictions.push(r);
+              });
     }
 
     self.userName("José");

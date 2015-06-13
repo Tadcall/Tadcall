@@ -75,14 +75,20 @@
               <ul  class="list-group" data-bind="foreach: user().virtualNumbers">
                 <li class="list-group-item" data-bind="text: $data, attr: { id: $data }, css:{ 'active': $root.vNoSelected() == $data}, click: function(){$root.selectNo('virtual',$data)}"></li>
               </ul>
-              <p><a class="btn btn-default" href="#" role="button">+</a></p>
            </div>
             <div class="col-md-4">
               <h2>Your Real Numbers</h2>
               <ul class="list-group" data-bind="foreach: user().realNumbers">
-                <li class="list-group-item" data-bind="text: $data, attr: { id: $data }, css:{ 'active': $root.rNoSelected() == $data}, click: function(){$root.selectNo('real',$data)}"></li>
+                <li class="list-group-item" data-bind="css:{ 'active': $root.rNoSelected() == $data}, click: function(){$root.selectNo('real',$data)}"><span data-bind="text: '+'+$data"></span><span data-bind="click: function(){$root.user().deleteNumber($data)}" class="glyphicon glyphicon-trash pull-right"></span></li>
               </ul>
-              <p><a class="btn btn-default" href="#" role="button">+</a></p>
+              <form class="form-inline">
+                <div class="input-group">
+                  <span class="input-group-addon">+</span>
+                  <input id="newNumber" type="text" class="form-control"
+                         placeholder="Number">
+                </div>
+                <a class="btn btn-success" role="button" data-bind="click: createRealNumber">+</a>
+              </form>
             </div>
             <div class="col-md-4">
               <h2>Restriction</h2>
