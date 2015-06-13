@@ -24,6 +24,9 @@ urlpatterns = [
     url(r'^get_links/', backend.work.get_links),
     url(r'^add_real_phone_number/', backend.work.add_real_phone_number),
     url(r'^get_real_phone_numbers/', backend.work.get_real_phone_numbers),
+    url(r'^get_virtual_phone_numbers/', backend.work.get_virtual_phone_numbers),
+    url(r'^delete_real_phone_number/', backend.work.delete_real_phone_number),
     url(r'^add_link/', backend.work.add_link),
+    url(r'^add_link_with_restrictions/', backend.work.add_link_with_restrictions),
     url(r'^answer/', backend.work.answer)
 ]

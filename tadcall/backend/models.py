@@ -58,3 +58,29 @@ class Link(models.Model):
            'virtual_phone_number': self.virtual_phone_number.to_dict()
        }
 
+class TimeRestriction(models.Model):
+     start_time = models.CharField(max_length=100)
+     end_time = models.CharField(max_length=100)
+
+     weekdays = models.BooleanField()
+     weekends = models.BooleanField()
+     link = models.ForeignKey(Link)
+
+     def __str__(self):
+     	return "Time %s %s %s %s" % ( self.start_time, self.end_time, self.weekdays, self.weekends)
+
+class LocationRestriction(models.Model):
+     country = models.CharField(max_length=50)
+     link = models.ForeignKey(Link)
+
+     def __str__(self):
+        return "Location %s" % ( self.country )
+
+class NumberCallsRestriction(models.Model):
+     numberCalls = models.IntegerField()
+     numberUnits = models.IntegerField()
+     unit = models.CharField(max_length=50)
+     link = models.ForeignKey(Link)
+
+     def __str__(self):
+        return "Number Calls %s %s %s" % ( self.numberCalls, self.numberUnits, self.unit)
