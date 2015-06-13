@@ -31,11 +31,21 @@ def add_real_phone_number(req):
     return HttpResponse()
 
 def add_link(req):
-    # traz um real_phone_number
+    user_id=req.GET['user_id']
+    real_phone_number=req.GET['real_phone_number']
+
     # make API call to get a virtual phone
+    virtual_phone_number = VirtualPhoneNumber.objects.first()
+
     # create link
+    link = Link()
+    link.user = User.objects.filter(id=user_id).first()
+    link.virtual_phone_number = virtual_phone_number
+    link.real_phone_number = RealPhoneNumber.objects.filter(number=real_phone_number).first()
+    link.save()
+
     # devolver link
-    return HttpResponse()
+    return make_response(link.to_dict())
 
 def get_real_phone_numbers(req):
     user_id = req.GET['user_id']
