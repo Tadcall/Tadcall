@@ -9,7 +9,7 @@ def dial(phoneNumber):
 	f = open('backend/resources/dial.xml', 'r')
 	template = f.read()
 	f.close()
-	res = template.replace('backend/resources/phone_number', str(phoneNumber))
+	res = template.replace('phone_number', str(phoneNumber))
 	return res
 
 def hangup():
