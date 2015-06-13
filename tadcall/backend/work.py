@@ -9,7 +9,7 @@ CONTENT_TYPE = 'application/json'
 def get_user(req):
     name = req.GET['name']
     user = User.objects.filter(name = name).first()
-    content = {'id' : user.id}
+    content = {'user_id' : user.id}
     return make_response(content)
 
 def get_links(req):
@@ -29,9 +29,17 @@ def add_real_phone_number(req):
     return HttpResponse()
 
 def add_link(req):
+    # traz um real_phone_number
     # make API call to get a virtual phone
+    # create link
+    # devolver link
+    return HttpResponse()
 
-    return 0
+def get_real_phone_numbers(req):
+    user_id = req.GET['user_id']
+    rtns = RealPhoneNumber.objects.filter(user = user_id)
+    content = map(lambda x: x.to_dict(), rtns)
+    return make_response(content)
 
 
 def make_response(content):

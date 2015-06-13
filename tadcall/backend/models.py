@@ -10,7 +10,7 @@ class User(models.Model):
 
     def to_dict(self):
         return {
-            'user': self.id,
+            'user_id': self.id,
             'name': self.name
         }
 
