@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 
 from backend.models import *
+from backend.apidaze import *
+
 import pdb
 import json
 
@@ -41,6 +43,9 @@ def get_real_phone_numbers(req):
     content = map(lambda x: x.to_dict(), rtns)
     return make_response(content)
 
+def answer(req):
+    print req
+    return HttpResponse(dial('00351935613910'))
 
 def make_response(content):
     return HttpResponse(json.dumps(content), CONTENT_TYPE)
