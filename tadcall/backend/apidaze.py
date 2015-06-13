@@ -6,20 +6,20 @@ def getVirtualNumbers():
 	return response
 
 def dial(phoneNumber):
-	f = open('dial.xml', 'r')
+	f = open('backend/resources/dial.xml', 'r')
 	template = f.read()
 	f.close()
 	res = template.replace('phone_number', str(phoneNumber))
 	return res
 
 def hangup():
-	f = open('hangup.xml', 'r')
+	f = open('backend/resources/hangup.xml', 'r')
 	template = f.read()
 	f.close()
 	return template
 
 def voicemail(textToRead):
-	f = open('speak.xml', 'r')
+	f = open('backend/resources/speak.xml', 'r')
 	template = f.read()
 	f.close()
 	res = template.replace('text', str(textToRead))

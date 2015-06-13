@@ -23,4 +23,7 @@ urlpatterns = [
     url(r'^get_user/', backend.work.get_user),
     url(r'^get_links/', backend.work.get_links),
     url(r'^add_real_phone_number/', backend.work.add_real_phone_number),
+    url(r'^get_real_phone_numbers/', backend.work.get_real_phone_numbers),
+    url(r'^add_link/', backend.work.add_link),
+    url(r'^answer/', backend.work.answer)
 ]

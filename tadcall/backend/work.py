@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 
 from backend.models import *
+from backend.apidaze import *
+
 import pdb
 import json
 
@@ -9,7 +11,7 @@ CONTENT_TYPE = 'application/json'
 def get_user(req):
     name = req.GET['name']
     user = User.objects.filter(name = name).first()
-    content = {'id' : user.id}
+    content = {'user_id' : user.id}
     return make_response(content)
 
 def get_links(req):
@@ -29,10 +31,45 @@ def add_real_phone_number(req):
     return HttpResponse()
 
 def add_link(req):
-    # make API call to get a virtual phone
+    user_id=req.GET['user_id']
+    real_phone_number=req.GET['real_phone_number']
 
-    return 0
+    # make API call to get a virtual phone
+    virtual_phone_number = VirtualPhoneNumber.objects.first()
+
+    # create link
+    link = Link()
+    link.user = User.objects.filter(id=user_id).first()
+    link.virtual_phone_number = virtual_phone_number
+    link.real_phone_number = RealPhoneNumber.objects.filter(number=real_phone_number).first()
+    link.save()
+
+    # devolver link
+    return make_response(link.to_dict())
+
+def get_real_phone_numbers(req):
+    user_id = req.GET['user_id']
+    rtns = RealPhoneNumber.objects.filter(user = user_id)
+    content = map(lambda x: x.to_dict(), rtns)
+    return make_response(content)
+
+def answer(req):
+    dialed_phone_number=req.GET['destination_number']
+    virtual_phone_number = VirtualPhoneNumber.objects.filter(number=dialed_phone_number).first()
+
+    print dialed_phone_number
+    if(virtual_phone_number):
+	    print "ACCEPT"
+	    return make_xml_response(dial('00351964817388'))
+    else:
+	    print "REJECT"
+	    return make_xml_response(hangup())
 
 
 def make_response(content):
     return HttpResponse(json.dumps(content), CONTENT_TYPE)
+
+def make_xml_response(content):
+    res = HttpResponse(content, 'text/xml; charset=us-ascii')
+
+    return res
