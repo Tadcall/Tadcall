@@ -44,8 +44,22 @@ def get_real_phone_numbers(req):
     return make_response(content)
 
 def answer(req):
-    print req
-    return HttpResponse(dial('00351935613910'))
+    dialed_phone_number=req.GET['destination_number']
+    virtual_phone_number = VirtualPhoneNumber.objects.filter(number=dialed_phone_number).first()
+
+    print dialed_phone_number
+    if(virtual_phone_number):
+	    print "ACCEPT"
+	    return make_xml_response(dial('00351964817388'))
+    else:
+	    print "REJECT"
+	    return make_xml_response(hangup())
+
 
 def make_response(content):
     return HttpResponse(json.dumps(content), CONTENT_TYPE)
+
+def make_xml_response(content):
+    res = HttpResponse(content, 'text/xml; charset=us-ascii')
+
+    return res
