@@ -20,8 +20,9 @@ var RestrictionModel = function() {
         else return "Never";
       }
       else if(self.restrictionType() == "Location"){
-        return "Only if in " + options.country + ".";
+        return "Only calls from " + options.country + ".";
       }else if(self.restrictionType() == "Number of Calls"){
+        console.log(options);
         return "Only " + options.numberCalls + " calls within " +
                 options.numberUnits + " " + options.unit + ".";
       }
