@@ -16,9 +16,10 @@ def get_user(req):
     return make_response(content)
 
 def get_links(req):
-    user_id = req.GET['id']
+    user_id = req.GET['user_id']
     links = Link.objects.filter(user = user_id)
     content = map(lambda x: x.to_dict(), links)
+
     return make_response(content)
 
 @csrf_exempt
@@ -61,13 +62,12 @@ def add_link(req):
 
 @csrf_exempt
 def add_link_with_restrictions(req):
-    body = json.loads(req.body) 
+    body = json.loads(req.body)
     user_id=req.GET['user_id']
 
     rest_type = body['type']
     virtual_number_s = body['vNumber']
     real_number_s = body['rNumber']
-
 
     virtual_number = VirtualPhoneNumber.objects.filter(number=virtual_number_s).first()
     real_number = RealPhoneNumber.objects.filter(number=real_number_s).first()
@@ -88,13 +88,13 @@ def add_link_with_restrictions(req):
       weekends = body['options']['weekends']
 
       restriction = TimeRestriction()
-      restriction.start = start
-      restriction.end = end
+      restriction.start_time = start
+      restriction.end_time = end
       restriction.weekdays = weekdays
       restriction.weekends = weekends
       restriction.link = link
       restriction.save()
-	
+
     elif rest_type == 'Location':
       country = body['options']['country']
 

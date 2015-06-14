@@ -51,36 +51,83 @@ class Link(models.Model):
     def __str__(self):
         return "%s %s %s" % ( self.user, self.virtual_phone_number, self.real_phone_number)
 
+
     def to_dict(self):
-       return  {
-           'user': self.user.to_dict(),
-           'real_phone_number': self.real_phone_number.to_dict(),
-           'virtual_phone_number': self.virtual_phone_number.to_dict()
-       }
+        timeRestrictions = TimeRestriction.objects.filter(link = self.id)
+        numberCallRestrictions = NumberCallsRestriction.objects.filter(link = self.id)
+        locationRestrictions = LocationRestriction.objects.filter(link = self.id)
+
+        restriction = []
+        if(timeRestrictions.first()):
+            restriction = timeRestrictions.first()
+
+        elif(numberCallRestrictions.first()):
+            restriction = numberCallRestrictions.first()
+
+        elif(locationRestrictions.first()):
+            restriction = locationRestrictions.first()
+
+        if not restriction:
+            return None
+
+        return  {
+                'restriction': restriction.to_dict(),
+                'rNumber': self.real_phone_number.number,
+                'vNumber': self.virtual_phone_number.number
+                }
 
 class TimeRestriction(models.Model):
-     start_time = models.CharField(max_length=100)
-     end_time = models.CharField(max_length=100)
+    start_time = models.CharField(max_length=100)
+    end_time = models.CharField(max_length=100)
 
-     weekdays = models.BooleanField()
-     weekends = models.BooleanField()
-     link = models.ForeignKey(Link)
+    weekdays = models.BooleanField()
+    weekends = models.BooleanField()
+    link = models.ForeignKey(Link)
 
-     def __str__(self):
+    def __str__(self):
      	return "Time %s %s %s %s" % ( self.start_time, self.end_time, self.weekdays, self.weekends)
 
-class LocationRestriction(models.Model):
-     country = models.CharField(max_length=50)
-     link = models.ForeignKey(Link)
+    def to_dict(self):
+        return {
+                'type': "Time",
+                    'options': {
+                        'start_time': self.start_time,
+                        'end_time': self.end_time,
+                        'weekdays': self.weekdays,
+                        'weekends': self.weekends
+                    }
+                }
 
-     def __str__(self):
+class LocationRestriction(models.Model):
+    country = models.CharField(max_length=50)
+    link = models.ForeignKey(Link)
+
+    def __str__(self):
         return "Location %s" % ( self.country )
 
-class NumberCallsRestriction(models.Model):
-     numberCalls = models.IntegerField()
-     numberUnits = models.IntegerField()
-     unit = models.CharField(max_length=50)
-     link = models.ForeignKey(Link)
+    def to_dict(self):
+        return {
+                'type': "Location",
+                    'options': {
+                        'country': self.country
+                    }
+                }
 
-     def __str__(self):
+class NumberCallsRestriction(models.Model):
+    numberCalls = models.IntegerField()
+    numberUnits = models.IntegerField()
+    unit = models.CharField(max_length=50)
+    link = models.ForeignKey(Link)
+
+    def __str__(self):
         return "Number Calls %s %s %s" % ( self.numberCalls, self.numberUnits, self.unit)
+
+    def to_dict(self):
+        return {
+                'type': "NumberCalls",
+                    'options': {
+                        'numberCalls': self.numberCalls,
+                        'numberUnits': self.numberUnits,
+                        'unit': self.unit
+                    }
+                }
