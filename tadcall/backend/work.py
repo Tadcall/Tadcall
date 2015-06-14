@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from backend.models import *
 from backend.apidaze import *
+import datetime
 
 import pdb
 import json
@@ -129,17 +130,54 @@ def get_virtual_phone_numbers(req):
     content = map(lambda x: x.to_dict(), rtns)
     return make_response(content)
 
+
+def should_accept(virtual_phone_number):
+
+    link = Link.objects.filter(virtual_phone_number = virtual_phone_number).first()
+
+    if not link:
+        print "No link"
+        return False
+
+    restriction = TimeRestriction.objects.filter(link=link).first()
+
+    if restriction:
+        print "Time restriction"
+        start_time = restriction.start_time
+        end_time = restriction.end_time
+
+        now = datetime.datetime.now()
+        after = now.time().hour > int(start_time.split(':')[0])
+        before = now.time().hour < int(end_time.split(':')[0])
+
+        if restriction.weekends:
+            print "Today is weekend"
+            return False
+
+        if after and before:
+            print "Accepted"
+            return True
+
+        print "Reject"
+        return False
+
+
 def answer(req):
+    print "Received call"
     dialed_phone_number=req.GET['destination_number']
     virtual_phone_number = VirtualPhoneNumber.objects.filter(number=dialed_phone_number).first()
 
-    print dialed_phone_number
     if(virtual_phone_number):
-	    print "ACCEPT"
-	    return make_xml_response(dial('00351964817388'))
-    else:
-	    print "REJECT"
-	    return make_xml_response(hangup())
+        if should_accept(virtual_phone_number):
+            real_phone_number = Link.objects.filter(virtual_phone_number=virtual_phone_number).first().real_phone_number
+            print "Calling real_phone_number "  + str(real_phone_number.number)
+	    return make_xml_response(dial(real_phone_number.number))
+
+    print "REJECT"
+    import time
+    time.sleep(5)
+    return make_xml_response(voicemail("Carminda do not call me while i am at home. My wife can discover our secret love. Kisses my sweet."))
+
 
 def make_response(content):
     return HttpResponse(json.dumps(content), CONTENT_TYPE)

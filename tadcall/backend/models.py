@@ -91,8 +91,8 @@ class TimeRestriction(models.Model):
         return {
                 'type': "Time",
                     'options': {
-                        'start_time': self.start_time,
-                        'end_time': self.end_time,
+                        'start': self.start_time,
+                        'end': self.end_time,
                         'weekdays': self.weekdays,
                         'weekends': self.weekends
                     }
@@ -125,9 +125,9 @@ class NumberCallsRestriction(models.Model):
     def to_dict(self):
         return {
                 'type': "NumberCalls",
-                    'options': {
-                        'numberCalls': self.numberCalls,
-                        'numberUnits': self.numberUnits,
-                        'unit': self.unit
+                'options': {
+                    'numberCalls': self.numberCalls,
+                    'numberUnits': self.numberUnits,
+                    'unit': self.unit
                     }
                 }
