@@ -25,6 +25,7 @@ var MenuModel = function() {
       var user = new UserModel(self.userName);
       user.getNumbers();
       self.user(user);
+      self.getRestrictions();
       self.currentView("logged");
     };
     self.signOut = function(){
@@ -91,13 +92,31 @@ var MenuModel = function() {
                  options: options,
                  vNumber: self.vNoSelected(),
                  rNumber: self.rNoSelected()};
-      console.log(req);
       $.post("http://46.101.25.199:7999/add_link_with_restrictions/?user_id="
               + self.user().id(), JSON.stringify(req),
               function(data){
                  self.restrictions.push(r);
               });
     }
+
+    self.getRestrictions = function(){
+      if(self.user()){
+        $.getJSON("http://46.101.25.199:7999/get_links/?user_id=" +
+                    self.user().id(),
+                    function(data){
+                      data.forEach(function(el){
+                        var r = new RestrictionModel();
+                        r.rNumber(el.rNumber);
+                        r.vNumber(el.vNumber);
+                        if( el.restriction.type == "NumberCalls") el.restriction.type = "Number of Calls";
+                        r.restrictionType(el.restriction.type);
+                        r.restrictionOptions(el.restriction.options);
+                        self.restrictions.push(r);
+                      });
+                    });
+      }
+    }
+
 
     self.userName("José");
     self.signIn();
