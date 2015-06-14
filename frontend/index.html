@@ -36,7 +36,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">TadCall</a>
+          <a class="navbar-brand" href="#">TADcall</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -60,9 +60,8 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>Make your discartable number!</h1>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.  </p>
-        <p><a class="btn btn-primary btn-lg js-make-number" href="#" role="button">Learn more »</a></p>
+        <h1>Regain control of your phone number!</h1>
+        <p>With TADcall you can create virtual numbers and apply restrictions to inbound phone calls. This way you can control who calls and when!</p>
       </div>
     </div>
 
@@ -73,7 +72,7 @@
             <div class="col-md-4">
               <h2>Your Virtual Numbers</h2>
               <ul  class="list-group" data-bind="foreach: user().virtualNumbers">
-                <li class="list-group-item" data-bind="text: $data, attr: { id: $data }, css:{ 'active': $root.vNoSelected() == $data}, click: function(){$root.selectNo('virtual',$data)}"></li>
+                <li class="list-group-item" data-bind="text: '+'+$data, attr: { id: $data }, css:{ 'active': $root.vNoSelected() == $data}, click: function(){$root.selectNo('virtual',$data)}"></li>
               </ul>
            </div>
             <div class="col-md-4">
@@ -167,8 +166,8 @@
         </thead>
         <tbody data-bind="foreach: restrictions">
           <tr>
-            <td data-bind="text: vNumber"></td>
-            <td data-bind="text: rNumber"></td>
+            <td data-bind="text: '+' + vNumber()"></td>
+            <td data-bind="text: '+' + rNumber()"></td>
             <td data-bind="text: restrictionType"></td>
             <td data-bind="text: printRestriction()"></td>
           </tr>

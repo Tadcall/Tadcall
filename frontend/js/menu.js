@@ -118,7 +118,7 @@ var MenuModel = function() {
     }
 
 
-    self.userName("José");
+    self.userName("Joaquim");
     self.signIn();
 };
 
