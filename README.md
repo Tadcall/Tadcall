@@ -10,6 +10,10 @@ Tadcall allows you to regain countrol of your phone number:
 
 Tadcall uses [Apidaze](http://apidaze.io) sdk and services on the backend. Thank you *Apidaze*.
 
+<a href="https://www.youtube.com/watch?v=vBVV9_yjijk&feature=youtu.be">
+<img src="https://pbs.twimg.com/media/CH5f4bBWoAA62VN.png"/>
+</a>
+
 # INSTALL:
 
  * sudo pip install Django
