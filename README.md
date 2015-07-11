@@ -1,6 +1,6 @@
 # TadCall
 
-<iframe src="https://www.slideshare.net/slideshow/embed_code/key/sS5e3McegIohjk" width="476" height="400" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+Tadcall presentation http://www.slideshare.net/jtrindade/tadcall-presentation
 
 # INSTALL:
 
