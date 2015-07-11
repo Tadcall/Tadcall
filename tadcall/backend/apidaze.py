@@ -1,8 +1,9 @@
 import urllib2
 
+SECRET_KEY="PLEASE_CHANGE_THIS"
 
 def getVirtualNumbers():
-	response = urllib2.urlopen("https://api4.apidaze.io/e14c0591/numbers?api_secret=***REMOVED***").read()
+	response = urllib2.urlopen("https://api4.apidaze.io/e14c0591/numbers?api_secret=" + SECRET_KEY).read()
 	return response
 
 def dial(phoneNumber):

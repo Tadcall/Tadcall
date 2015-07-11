@@ -58,7 +58,7 @@ def add_link(req):
     link.real_phone_number = RealPhoneNumber.objects.filter(number=real_phone_number).first()
     link.save()
 
-    # devolver link
+    # return link
     return make_response(link.to_dict())
 
 @csrf_exempt
